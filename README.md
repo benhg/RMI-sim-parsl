@@ -16,7 +16,7 @@ This section is mostly for me, to help me understand how it works.
 
 ```
 / aggregate*.py (for output handling)             
-  auto_bash.py (handling input and execution) - /<MODEL NAME>_model/ - NUMBERdT/* (intermediate output data)
+  auto_bash.py (handling input and execution) - /<MODEL NAME>_model/ - NUMBERdT/* (bash scripts for submitting)
                                                                      - finished_data/ (final output data)
                                                                      - master_codes/ - RMI_<MODEL NAME>.py (Domain code, run as bash app)
                                                 /finished_data (final output data for all things in the package)
