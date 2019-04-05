@@ -1,3 +1,7 @@
+import os
+import sys
+import json
+
 def ask_user_for_info():
     # Begin parameter collection
 
@@ -58,7 +62,6 @@ def ask_user_for_info():
         T_batch = float(input("Enter batch T step size: "))
 
     model_folder = path
-
     # Script name format
 
     scripts = {
@@ -70,11 +73,40 @@ def ask_user_for_info():
 
     packed_folder = 'N={0}x{0},{1}M,{2}dT,n={3}'.format(size, measurements,
                                                         delta_T, n)
-    whole_path = '{0}/{1}/{2}dT/{3}'.format(path,
+    whole_path = '{1}/{2}dT/{3}'.format(path,
                                             model_folder,
                                             delta_T,
                                             packed_folder)
-    folder_path = '{0}/{1}/{2}dT/{3}'.format(path,
+    folder_path = '{1}/{2}dT/{3}'.format(path,
                                              model_folder,
                                              delta_T,
                                              packed_folder)
+
+    return {
+          "folder_path": folder_path,
+          "packed_folder": packed_folder,
+          "whole_path": whole_path,
+          "scripts": scripts,
+          "model_folder": model_folder,
+          "T_start": T_start,
+          "T_end": T_end,
+          "T_batch": T_batch,
+          "path": path,
+          "calc_file": calc_file,
+          "measurements": measurements,
+          "delta_T": delta_T,
+          "size": size,
+          "n": n,
+          "theta_coefficient": theta_coefficient,
+          "y_tilde": y_tilde,
+          "model": model,
+          "models": models
+            }
+
+
+if __name__ == '__main__':
+    try:
+        with open(sys.argv[1]) as fh:
+            json.dump(ask_user_for_info(), fh)
+    except Exception as e:
+        print(json.dumps(ask_user_for_info(), indent=2))

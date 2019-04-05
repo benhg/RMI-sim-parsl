@@ -1,0 +1,29 @@
+{
+  "folder_path": "/Users/ben/Desktop/hpcproj//Users/ben/Desktop/hpcproj/0.05dT/N=16x16,100M,0.05dT,n=2",
+  "packed_folder": "N=16x16,100M,0.05dT,n=2",
+  "whole_path": "/Users/ben/Desktop/hpcproj//Users/ben/Desktop/hpcproj/0.05dT/N=16x16,100M,0.05dT,n=2",
+  "scripts": {
+    "XY": "RMI_XY.py",
+    "QCD": "RMI_XY.py",
+    "beta": "RMI_XY.py"
+  },
+  "model_folder": "/Users/ben/Desktop/hpcproj",
+  "T_start": 0.05,
+  "T_end": 2.0,
+  "T_batch": 0.1,
+  "path": "/Users/ben/Desktop/hpcproj",
+  "calc_file": "N=16x16,100M,0.05dT,n=2",
+  "measurements": 100,
+  "delta_T": 0.05,
+  "size": 16,
+  "n": 2,
+  "theta_coefficient": 0,
+  "y_tilde": 0,
+  "model": "XY",
+  "models": {
+    "Ising": "Ising_model",
+    "XY": "XY_model",
+    "QCD": "QCD_model",
+    "beta": "beta_model"
+  }
+}

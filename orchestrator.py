@@ -11,7 +11,7 @@ from parsl.app.app import bash_app
 import generate_config
 
 
-# basic config
+# basic parsl config
 parsl.load(config)
 
 
