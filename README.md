@@ -29,4 +29,4 @@ This is the current file structure. We will attempt to merge all of `aggregate`,
 
 The primary developer is [Ben Glick](https://glick.cloud). All of the physics at play comes from Mohamed Anber and Brian Smith, who also wrote the initial code. Ben's faculty advisor, Jens Mache is also involved with the project. 
 
-If you have any questions, feel free to reach out to Ben at (mailto:glick@lclark.edu).
+If you have any questions, feel free to reach out to Ben at [glick@lclark.edu](mailto:glick@lclark.edu).
