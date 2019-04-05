@@ -6,7 +6,9 @@ from random import random, randint, uniform
 from multiprocessing import Pool
 from pylab import plot, title, xlabel, ylabel, \
     legend, show, savefig, xlim
-import sys, time, datetime
+import sys
+import time
+import datetime
 
 # Parameters
 
@@ -46,31 +48,31 @@ def calcdE(J, lattice, spin, newspin, i, j):
     # Note periodic boundary conditions
     if neighbor > -1:
         dE += cos(newspin - lattice[neighbor, j]) - \
-              cos(spin - lattice[neighbor, j])
+            cos(spin - lattice[neighbor, j])
     else:
         dE += cos(newspin - lattice[size - 1, j]) - \
-              cos(spin - lattice[size - 1, j])
+            cos(spin - lattice[size - 1, j])
     neighbor = i + 1
     if neighbor < size:
         dE += cos(newspin - lattice[neighbor, j]) - \
-              cos(spin - lattice[neighbor, j])
+            cos(spin - lattice[neighbor, j])
     else:
         dE += cos(newspin - lattice[0, j]) - \
-              cos(spin - lattice[0, j])
+            cos(spin - lattice[0, j])
     neighbor = j - 1
     if neighbor > -1:
         dE += cos(newspin - lattice[i, neighbor]) - \
-              cos(spin - lattice[i, neighbor])
+            cos(spin - lattice[i, neighbor])
     else:
         dE += cos(newspin - lattice[i, size - 1]) - \
-              cos(spin - lattice[i, size - 1])
+            cos(spin - lattice[i, size - 1])
     neighbor = j + 1
     if neighbor < size:
         dE += cos(newspin - lattice[i, neighbor]) - \
-              cos(spin - lattice[i, neighbor])
+            cos(spin - lattice[i, neighbor])
     else:
         dE += cos(newspin - lattice[i, 0]) - \
-              cos(spin - lattice[i, 0])
+            cos(spin - lattice[i, 0])
     dE *= -J
 
     return dE
@@ -322,10 +324,18 @@ def vary_temps(betam, betaM, dbeta, savedata='yes'):
     replica_sigma = replica[:, 2]
 
     if savedata == 'yes':
-        data = [T_plot, XY_E, XY_sigma, AUB_E, AUB_sigma, replica_E, replica_sigma]
+        data = [
+            T_plot,
+            XY_E,
+            XY_sigma,
+            AUB_E,
+            AUB_sigma,
+            replica_E,
+            replica_sigma]
         # Save to finished data
         path = '/home/users/briansmith/files/beta_model/finished_data'
-        savetxt('{0}/RMI_beta;{1};{2};{3};{4}'.format(path, E_measurements, betam, betaM, dbeta), data)
+        savetxt('{0}/RMI_beta;{1};{2};{3};{4}'.format(path,
+                                                      E_measurements, betam, betaM, dbeta), data)
 
     return [T_plot, replica_E, replica_sigma, AUB_E, AUB_sigma, XY_E, XY_sigma]
 

@@ -6,7 +6,9 @@ from random import random, randint, uniform
 from multiprocessing import Pool
 from pylab import plot, title, xlabel, ylabel, \
     legend, show, savefig, xlim
-import sys, time, datetime
+import sys
+import time
+import datetime
 
 # Parameters
 
@@ -144,7 +146,7 @@ def XYmcsim(T):
 
     expectE /= len(E_raw)
     sigma_E = calcsigma(expectE, E_raw)
-    
+
     if equilibrium_test == 'yes':
         plot(E_plot)
         show()
@@ -319,13 +321,21 @@ def vary_temps(Tm, TM, dT, savedata='yes'):
     # Replica model
     replica_E = replica[:, 1]
     replica_sigma = replica[:, 2]
-    
+
     if savedata == 'yes':
-        data = [T_plot, XY_E, XY_sigma, AUB_E, AUB_sigma, replica_E, replica_sigma]
+        data = [
+            T_plot,
+            XY_E,
+            XY_sigma,
+            AUB_E,
+            AUB_sigma,
+            replica_E,
+            replica_sigma]
         # Save to finished data
         path = '/home/users/briansmith/files/XY_model/finished_data'
-        savetxt('{0}/RMI_XY;{1};{2};{3};{4}'.format(path, E_measurements, Tm, TM, dT), data)
-    
+        savetxt('{0}/RMI_XY;{1};{2};{3};{4}'.format(path,
+                                                    E_measurements, Tm, TM, dT), data)
+
     return [T_plot, replica_E, replica_sigma, AUB_E, AUB_sigma, XY_E, XY_sigma]
 
 
@@ -359,10 +369,10 @@ def calcRMI(T_min, T_max, Tstep):
             term = -deltaT * (2 * E_replica[j] - E_AUB[j] - 2 *
                               E_XY[j]) / (T_plot[j] ** 2)
             sigma_sigma_j = ((2 * deltaT) / ((T_plot[j] ** 2) * size * 2))\
-                            ** 2 * (sigma_replica[j] ** 2) + (deltaT / ((T_plot[j] ** 2) *
-                            size * 2)) ** 2 * (sigma_AUB[j] ** 2) + (
-                            (2 * deltaT) / ((T_plot[j] ** 2) * size * 2))\
-                            ** 2 * (sigma_XY[j] ** 2)
+                ** 2 * (sigma_replica[j] ** 2) + (deltaT / ((T_plot[j] ** 2) *
+                                                            size * 2)) ** 2 * (sigma_AUB[j] ** 2) + (
+                (2 * deltaT) / ((T_plot[j] ** 2) * size * 2))\
+                ** 2 * (sigma_XY[j] ** 2)
             sigma_sigma_i += sigma_sigma_j
             RMI += term
         sigma_i = sqrt(sigma_sigma_i)

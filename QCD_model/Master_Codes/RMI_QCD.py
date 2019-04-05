@@ -6,7 +6,9 @@ from random import random, randint, uniform
 from multiprocessing import Pool
 from pylab import plot, title, xlabel, ylabel, \
     legend, show, savefig, xlim
-import sys, time, datetime
+import sys
+import time
+import datetime
 
 # Parameters
 
@@ -17,7 +19,7 @@ output_path = 'output_data.txt'  # Directory path
 
 if size_global == 8:
     tau_global = 9000
-elif size_global == 16:  
+elif size_global == 16:
     tau_global = 14000
 elif size_global == 24:
     tau_global = 40000
@@ -26,7 +28,7 @@ elif size_global == 32:
 elif size_global == 40:
     tau_global = 75000
 elif size_global == 48:
-     tau_global = 125000
+    tau_global = 125000
 elif size_global == 56:
     tau_global = 150000
 
@@ -47,31 +49,31 @@ def calcdE(J, lattice, spin, newspin, i, j):
     # Note periodic boundary conditions
     if neighbor > -1:
         dE += cos(newspin - lattice[neighbor, j]) - \
-              cos(spin - lattice[neighbor, j])
+            cos(spin - lattice[neighbor, j])
     else:
         dE += cos(newspin - lattice[size - 1, j]) - \
-              cos(spin - lattice[size - 1, j])
+            cos(spin - lattice[size - 1, j])
     neighbor = i + 1
     if neighbor < size:
         dE += cos(newspin - lattice[neighbor, j]) - \
-              cos(spin - lattice[neighbor, j])
+            cos(spin - lattice[neighbor, j])
     else:
         dE += cos(newspin - lattice[0, j]) - \
-              cos(spin - lattice[0, j])
+            cos(spin - lattice[0, j])
     neighbor = j - 1
     if neighbor > -1:
         dE += cos(newspin - lattice[i, neighbor]) - \
-              cos(spin - lattice[i, neighbor])
+            cos(spin - lattice[i, neighbor])
     else:
         dE += cos(newspin - lattice[i, size - 1]) - \
-              cos(spin - lattice[i, size - 1])
+            cos(spin - lattice[i, size - 1])
     neighbor = j + 1
     if neighbor < size:
         dE += cos(newspin - lattice[i, neighbor]) - \
-              cos(spin - lattice[i, neighbor])
+            cos(spin - lattice[i, neighbor])
     else:
         dE += cos(newspin - lattice[i, 0]) - \
-              cos(spin - lattice[i, 0])
+            cos(spin - lattice[i, 0])
     dE *= -J
 
     return dE
@@ -111,7 +113,7 @@ def QCD_E(T):
     corr = 2 * tau
     steps = corr + BM * corr
     L = zeros([size, size], float)  # Initial lattice all spin 0
-    E = -2 * J * N - y_tilde * N # Initially all set at 0
+    E = -2 * J * N - y_tilde * N  # Initially all set at 0
 
     print("N =", size, "x", size, "; XY model at T =", T)
     E_plot = []
@@ -192,7 +194,7 @@ def QCD_AUB(T):
             L[i, j] = config
             E += dE
         # Record raw data every sweep
-        if k >= corr and k % corr  == 0:
+        if k >= corr and k % corr == 0:
             expectE += E
             Eraw.append(E)
 
@@ -247,7 +249,7 @@ def QCD_replica(T):
         dE2 = calcdE(J, L2, r, config2, i, j)
         dE = dE1 + dE2
         dE += y_tilde * (cos(theta * L1[i, j]) - cos(theta * config))
-        dE += y_tilde * (cos(theta * L2[i, j]) - cos(theta* config2))
+        dE += y_tilde * (cos(theta * L2[i, j]) - cos(theta * config2))
         # Calculate Boltzmann probability
         P = exp(-dE / beta)
         # Accept or reject the spin
@@ -321,10 +323,18 @@ def vary_temps(Tm, TM, dT, savedata='yes'):
     replica_sigma = replica[:, 2]
 
     if savedata == 'yes':
-        data = [T_plot, XY_E, XY_sigma, AUB_E, AUB_sigma, replica_E, replica_sigma]
+        data = [
+            T_plot,
+            XY_E,
+            XY_sigma,
+            AUB_E,
+            AUB_sigma,
+            replica_E,
+            replica_sigma]
         # Save to finished data
         path = '/home/users/briansmith/files/QCD_model/finished_data'
-        savetxt('{0}/RMI_QCD;{1};{2};{3};{4}'.format(path, E_measurements, Tm, TM, dT), data)
+        savetxt('{0}/RMI_QCD;{1};{2};{3};{4}'.format(path,
+                                                     E_measurements, Tm, TM, dT), data)
 
     return [T_plot, replica_E, replica_sigma, AUB_E, AUB_sigma, XY_E, XY_sigma]
 
@@ -359,10 +369,10 @@ def calcRMI(T_min, T_max, Tstep):
             term = -deltaT * (2 * E_replica[j] - E_AUB[j] - 2 *
                               E_QCD[j]) / (T_plot[j] ** 2)
             sigma_sigma_j = ((2 * deltaT) / ((T_plot[j] ** 2) * size * 2)) \
-                            ** 2 * (sigma_replica[j] ** 2) + (deltaT / ((T_plot[j] ** 2) *
-                                                                        size * 2)) ** 2 * (sigma_AUB[j] ** 2) + (
-                                    (2 * deltaT) / ((T_plot[j] ** 2) * size * 2)) \
-                            ** 2 * (sigma_QCD[j] ** 2)
+                ** 2 * (sigma_replica[j] ** 2) + (deltaT / ((T_plot[j] ** 2) *
+                                                            size * 2)) ** 2 * (sigma_AUB[j] ** 2) + (
+                (2 * deltaT) / ((T_plot[j] ** 2) * size * 2)) \
+                ** 2 * (sigma_QCD[j] ** 2)
             sigma_sigma_i += sigma_sigma_j
             RMI += term
         sigma_i = sqrt(sigma_sigma_i)
