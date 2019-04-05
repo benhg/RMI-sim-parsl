@@ -1,13 +1,13 @@
 {
-  "folder_path": "/Users/ben/Desktop/hpcproj//Users/ben/Desktop/hpcproj/0.05dT/N=16x16,100M,0.05dT,n=2",
+  "folder_path": "/Users/ben/Desktop/hpcproj/0.05dT/N=16x16,100M,0.05dT,n=2",
   "packed_folder": "N=16x16,100M,0.05dT,n=2",
-  "whole_path": "/Users/ben/Desktop/hpcproj//Users/ben/Desktop/hpcproj/0.05dT/N=16x16,100M,0.05dT,n=2",
+  "whole_path": "/Users/ben/Desktop/hpcproj/0.05dT/N=16x16,100M,0.05dT,n=2",
   "scripts": {
     "XY": "RMI_XY.py",
     "QCD": "RMI_XY.py",
     "beta": "RMI_XY.py"
   },
-  "model_folder": "/Users/ben/Desktop/hpcproj",
+  "model_folder": "XY_model",
   "T_start": 0.05,
   "T_end": 2.0,
   "T_batch": 0.1,

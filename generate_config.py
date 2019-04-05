@@ -61,7 +61,6 @@ def ask_user_for_info():
         T_end = float(input("Enter final T: "))
         T_batch = float(input("Enter batch T step size: "))
 
-    model_folder = path
     # Script name format
 
     scripts = {
@@ -87,7 +86,7 @@ def ask_user_for_info():
           "packed_folder": packed_folder,
           "whole_path": whole_path,
           "scripts": scripts,
-          "model_folder": model_folder,
+          "model_folder": models[model],
           "T_start": T_start,
           "T_end": T_end,
           "T_batch": T_batch,
