@@ -1,7 +1,7 @@
-from glob import *
+from glob import glob
 from pylab import *
 
-names = glob("/home/users/briansmith/files/XY_model/finished_data/*")
+names = glob.glob("/home/users/briansmith/files/XY_model/finished_data/*")
 data = [[], [], [], [], [], [], []]
 helpi = names[0].split(";")[2]
 names.sort(key=lambda x: float(x.split(';')[2]))
@@ -87,7 +87,7 @@ def calcRMI(DATA, Tstep, graph='yes'):
         sigma_replica,
         RMIpts,
         RMIsigmaplot]
-    path = '/home/users/briansmith/files/final_data'
+    path = 'final_data'
     savetxt('{0}/RMI_XY;{1};{2}.txt'.format(path, size, measurements), out_data)
     return [T_plot, RMIpts]
 
