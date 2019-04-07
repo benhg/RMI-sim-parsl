@@ -2,6 +2,7 @@ import os
 import sys
 import json
 
+
 def ask_user_for_info():
     # Begin parameter collection
 
@@ -13,7 +14,8 @@ def ask_user_for_info():
         'Ising': 'Ising_model',
         'XY': 'XY_model',
         'QCD': 'QCD_model',
-        'beta': 'beta_model'}
+        'beta': 'beta_model'
+    }
     model = input("Enter model to simulate: ")
     while model not in models:
         print("Valid models are:", list(models.keys()))
@@ -47,8 +49,8 @@ def ask_user_for_info():
 
     measurements = int(input("Enter number of independent measurements: "))
 
-    calc_file = "N={0}x{0},{1}M,{2}dT,n={3}".format(
-        size, measurements, delta_T, n)
+    calc_file = "N={0}x{0},{1}M,{2}dT,n={3}".format(size, measurements,
+                                                    delta_T, n)
     path = os.path.dirname(os.path.realpath(__file__))
     print("Ready to populate calculation file: ", calc_file)
 
@@ -66,41 +68,38 @@ def ask_user_for_info():
     scripts = {
         'XY': 'RMI_{0}.py'.format(model),
         'QCD': 'RMI_{0}.py'.format(model),
-        'beta': 'RMI_{0}.py'.format(model)}
+        'beta': 'RMI_{0}.py'.format(model)
+    }
 
     # Folder paths
 
-    packed_folder = 'N={0}x{0},{1}M,{2}dT,n={3}'.format(size, measurements,
-                                                        delta_T, n)
-    whole_path = '{1}/{2}dT/{3}'.format(path,
-                                            model_folder,
-                                            delta_T,
-                                            packed_folder)
-    folder_path = '{1}/{2}dT/{3}'.format(path,
-                                             model_folder,
-                                             delta_T,
-                                             packed_folder)
+    packed_folder = 'N={0}x{0},{1}M,{2}dT,n={3}'.format(
+        size, measurements, delta_T, n)
+    whole_path = '{1}/{2}dT/{3}'.format(path, model_folder, delta_T,
+                                        packed_folder)
+    folder_path = '{1}/{2}dT/{3}'.format(path, model_folder, delta_T,
+                                         packed_folder)
 
     return {
-          "folder_path": folder_path,
-          "packed_folder": packed_folder,
-          "whole_path": whole_path,
-          "scripts": scripts,
-          "model_folder": models[model],
-          "T_start": T_start,
-          "T_end": T_end,
-          "T_batch": T_batch,
-          "path": path,
-          "calc_file": calc_file,
-          "measurements": measurements,
-          "delta_T": delta_T,
-          "size": size,
-          "n": n,
-          "theta_coefficient": theta_coefficient,
-          "y_tilde": y_tilde,
-          "model": model,
-          "models": models
-            }
+        "folder_path": folder_path,
+        "packed_folder": packed_folder,
+        "whole_path": whole_path,
+        "scripts": scripts,
+        "model_folder": models[model],
+        "T_start": T_start,
+        "T_end": T_end,
+        "T_batch": T_batch,
+        "path": path,
+        "calc_file": calc_file,
+        "measurements": measurements,
+        "delta_T": delta_T,
+        "size": size,
+        "n": n,
+        "theta_coefficient": theta_coefficient,
+        "y_tilde": y_tilde,
+        "model": model,
+        "models": models
+    }
 
 
 if __name__ == '__main__':

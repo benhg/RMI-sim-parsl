@@ -10,7 +10,6 @@ from parsl.app.app import bash_app
 
 import generate_config
 
-
 # basic parsl config
 parsl.load(config)
 
@@ -30,8 +29,10 @@ def run_single_temp_range(temp_pair):
     write_T_min = round(temp_pair[0], 3)
     write_T_max = round(temp_pair[1], 3)
     # Now generate:
-    return "python3 {11}/{5}/Master_Codes/{12} {0} {6} {7} {2} {3} {8} {10} {11}".format(size, n, write_T_min, write_T_max, model, model_folder,
-                                                                                         delta_T, measurements, y_tilde, whole_path, theta_coefficient, path, scripts[model])
+    return "python3 {11}/{5}/Master_Codes/{12} {0} {6} {7} {2} {3} {8} {10} {11}".format(
+        size, n, write_T_min, write_T_max, model, model_folder, delta_T,
+        measurements, y_tilde, whole_path, theta_coefficient, path,
+        scripts[model])
 
 
 def submit_all_jobs(temp_list):

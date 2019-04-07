@@ -54,8 +54,7 @@ def calcRMI(DATA, Tstep, graph='yes'):
         RMI = 0.0
         sigma_sigma_i = 0.0
         for j in range(0, i):
-            term = deltabeta * (2 * E_replica[j] - E_AUB[j] - 2 *
-                                E_XY[j])
+            term = deltabeta * (2 * E_replica[j] - E_AUB[j] - 2 * E_XY[j])
             sigma_sigma_j = ((2 * deltabeta) / (size * 2)) \
                 ** 2 * (sigma_replica[j] ** 2) + (deltabeta / (
                     size * 2)) ** 2 * (sigma_AUB[j] ** 2) + (
@@ -80,18 +79,12 @@ def calcRMI(DATA, Tstep, graph='yes'):
         show()
 
     out_data = [
-        T_plot,
-        E_XY,
-        sigma_XY,
-        E_AUB,
-        sigma_AUB,
-        E_replica,
-        sigma_replica,
-        RMIpts,
-        RMIsigmaplot]
+        T_plot, E_XY, sigma_XY, E_AUB, sigma_AUB, E_replica, sigma_replica,
+        RMIpts, RMIsigmaplot
+    ]
     path = '/home/users/briansmith/files/final_data'
-    savetxt('{0}/RMI_beta;{1};{2}.txt'.format(path,
-                                              size, measurements), out_data)
+    savetxt('{0}/RMI_beta;{1};{2}.txt'.format(path, size, measurements),
+            out_data)
     return [T_plot, RMIpts]
 
 
