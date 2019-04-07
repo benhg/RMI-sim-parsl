@@ -48,8 +48,32 @@ def plot_rmi(T_plot, RMIpts, RMIsigmaplot):
     savefig("RMI")
     show()
 
+def calc_rmi_for_temp(E_XY, E_replica, E_AUB, T_plot):
+        count = len(E_XY)
+        RMIpts = []
+        RMIsigmaplot = []
+        deltaT = Tstep
+        for i in range(count):
+            RMI = 0.0
+            sigma_sigma_i = 0.0
+            for j in range(i, count):
+                term = deltaT * (2 * E_replica[j] - E_AUB[j] - 2 * E_XY[j]) / (
+                    T_plot[j]**2)
+                sigma_sigma_j = ((2 * deltaT) / ((T_plot[j] ** 2) * size * 2))\
+                    ** 2 * (sigma_replica[j] ** 2) + (deltaT / ((T_plot[j] ** 2) *
+                                                                size * 2)) ** 2 * (sigma_AUB[j] ** 2) + (
+                    (2 * deltaT) / ((T_plot[j] ** 2) * size * 2))\
+                    ** 2 * (sigma_XY[j] ** 2)
+                sigma_sigma_i += sigma_sigma_j
+                RMI += term
+            sigma_i = sqrt(sigma_sigma_i)
+            RMI /= 2 * size
+            RMIpts.append(RMI)
+            RMIsigmaplot.append(sigma_i)
+        return RMIsigmaplot, RMIpts, sigma_i
 
-def calcRMI(DATA, Tstep):
+
+def aggregate(DATA, Tstep):
     T_plot = DATA[0]
     # Replica data
     E_replica = DATA[5]
@@ -64,29 +88,8 @@ def calcRMI(DATA, Tstep):
     three_models_plot(T_plot, E_XY, E_aub, E_replica, sigma_XY, sigma_AUB,
                       sigma_replica)
 
-    # Calculate RMI for each temperature
-    print("Working on Renyi Mutual Information...")
-    count = len(E_XY)
-    RMIpts = []
-    RMIsigmaplot = []
-    deltaT = Tstep
-    for i in range(count):
-        RMI = 0.0
-        sigma_sigma_i = 0.0
-        for j in range(i, count):
-            term = deltaT * (2 * E_replica[j] - E_AUB[j] - 2 * E_XY[j]) / (
-                T_plot[j]**2)
-            sigma_sigma_j = ((2 * deltaT) / ((T_plot[j] ** 2) * size * 2))\
-                ** 2 * (sigma_replica[j] ** 2) + (deltaT / ((T_plot[j] ** 2) *
-                                                            size * 2)) ** 2 * (sigma_AUB[j] ** 2) + (
-                (2 * deltaT) / ((T_plot[j] ** 2) * size * 2))\
-                ** 2 * (sigma_XY[j] ** 2)
-            sigma_sigma_i += sigma_sigma_j
-            RMI += term
-        sigma_i = sqrt(sigma_sigma_i)
-        RMI /= 2 * size
-        RMIpts.append(RMI)
-        RMIsigmaplot.append(sigma_i)
+
+    RMIsigmaplot, RMIpts, sigma_i = calc_rmi_for_temp()
 
     plot_rmi(T_plot, RMIpts, RMIsigmaplot)
 
@@ -101,4 +104,5 @@ def calcRMI(DATA, Tstep):
 
 
 if __name__ == '__main__':
-    calcRMI(data, 0.05, graph='yes')
+    data, size, measurements = gen_data()
+    aggregate(data, 0.05)
