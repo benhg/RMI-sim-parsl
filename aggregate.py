@@ -78,17 +78,12 @@ def calcRMI(DATA, Tstep, graph='yes'):
         show()
 
     out_data = [
-        T_plot,
-        E_XY,
-        sigma_XY,
-        E_AUB,
-        sigma_AUB,
-        E_replica,
-        sigma_replica,
-        RMIpts,
-        RMIsigmaplot]
+        T_plot, E_XY, sigma_XY, E_AUB, sigma_AUB, E_replica, sigma_replica,
+        RMIpts, RMIsigmaplot
+    ]
     path = 'final_data'
-    savetxt('{0}/RMI_XY;{1};{2}.txt'.format(path, size, measurements), out_data)
+    savetxt('{0}/RMI_XY;{1};{2}.txt'.format(path, size, measurements),
+            out_data)
     return [T_plot, RMIpts]
 
 
