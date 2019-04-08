@@ -58,7 +58,7 @@ def ask_user_for_info():
         T_start = float(input("Enter starting beta: "))
         T_end = float(input("Enter final beta: "))
         T_batch = float(input("Enter batch beta step size: "))
-        delta_beta = run_config["delta_beta"]
+        delta_beta = T_batch
     else:
         T_start = float(input("Enter starting T: "))
         T_end = float(input("Enter final T: "))
