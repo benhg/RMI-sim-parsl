@@ -122,6 +122,29 @@ def calc_rmi_for_temp(E_XY, E_replica, E_AUB, T_plot):
     return RMIsigmaplot, RMIpts, sigma_i
 
 
+def save_data(model, out_data):
+    path = 'final_data'
+
+    if model == "XY":
+        savetxt(
+            '{0}/RMI_XY;{1};{2}.txt'.format(path, run_config["size"],
+                                            run_config["measurements"]),
+            out_data)
+    elif model == "QCD":
+        savetxt(
+            '{0}/RMI_QCD;{1};{2};{3};{4}.txt'.format(
+                path, run_config["size"], run_config["measurements"],
+                run_config["y_tilde"], run_config["theta_coefficient"]),
+            out_data)
+    elif model == "beta":
+        savetxt(
+            '{0}/RMI_beta;{1};{2}.txt'.format(path, run_config["size"],
+                                              run_config["measurements"]),
+            out_data)
+    else:
+        print("I don't know how to save the data for this model")
+
+
 def aggregate(DATA, Tstep):
     T_plot = DATA[0]
     # Replica data
@@ -145,9 +168,9 @@ def aggregate(DATA, Tstep):
         T_plot, E_XY, sigma_XY, E_AUB, sigma_AUB, E_replica, sigma_replica,
         RMIpts, RMIsigmaplot
     ]
-    path = 'final_data'
-    savetxt('{0}/RMI_XY;{1};{2}.txt'.format(path, size, measurements),
-            out_data)
+
+    save_data(run_config['model'], out_data)
+
     return [T_plot, RMIpts]
 
 
@@ -164,4 +187,8 @@ if __name__ == '__main__':
                     run_config["T_batch"], run_config["delta_T"]))
     submit_all_jobs(temp_list)
     data, size, measurements = gen_data(run_config["model"])
-    aggregate(data, 0.05)
+    if run_config["delta_beta"]:
+        delta = run_config["delta_beta"]
+    else:
+        delta = run_config["delta_T"]
+    aggregate(data, delta)
