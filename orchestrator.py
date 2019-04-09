@@ -145,7 +145,7 @@ def save_data(model, out_data):
         print("I don't know how to save the data for this model")
 
 
-def aggregate(DATA, Tstep):
+def aggregate(DATA, Tstep, plot=False):
     T_plot = DATA[0]
     # Replica data
     E_replica = DATA[5]
@@ -157,12 +157,7 @@ def aggregate(DATA, Tstep):
     E_XY = DATA[1]
     sigma_XY = DATA[2]
 
-    three_models_plot(T_plot, E_XY, E_aub, E_replica, sigma_XY, sigma_AUB,
-                      sigma_replica)
-
     RMIsigmaplot, RMIpts, sigma_i = calc_rmi_for_temp()
-
-    plot_rmi(T_plot, RMIpts, RMIsigmaplot)
 
     out_data = [
         T_plot, E_XY, sigma_XY, E_AUB, sigma_AUB, E_replica, sigma_replica,
@@ -170,6 +165,11 @@ def aggregate(DATA, Tstep):
     ]
 
     save_data(run_config['model'], out_data)
+
+    if plot:
+        three_models_plot(T_plot, E_XY, E_aub, E_replica, sigma_XY, sigma_AUB,
+                          sigma_replica)
+        plot_rmi(T_plot, RMIpts, RMIsigmaplot)
 
     return [T_plot, RMIpts]
 
