@@ -296,35 +296,25 @@ def vary_temps(Tm, TM, dT, savedata=True):
     else:
         temps = arange(Tm, TM + dT, dT)
 
-    # Separate core mapping to prevent memory error
-    cores = Pool()
-    result1 = cores.map(XYmcsim, temps)
-    cores.close()
-    cores.join()
+    normal = [XYmcsim(t) for t in temps]
+    AUB = [XYunionsim(t) for t in temps]
+    replica = [XYreplicasim(t) for t in temps]
 
-    cores = Pool()
-    result2 = cores.map(XYunionsim, temps)
-    cores.close()
-    cores.join()
 
-    cores = Pool()
-    result3 = cores.map(XYreplicasim, temps)
-    cores.close()
-    cores.join()
-
-    normal = array(result1)
-    AUB = array(result2)
-    replica = array(result3)
-
+    normal = array([n.result() for n in normal])
     # Normal model
     T_plot = normal[:, 0]
     XY_E = normal[:, 1]
     XY_sigma = normal[:, 2]
 
+
+    AUB = array([t.result() for t in AUB])
     # AUB model
     AUB_E = AUB[:, 1]
     AUB_sigma = AUB[:, 2]
 
+
+    replica = array([t.result() for t in replica])
     # Replica model
     replica_E = replica[:, 1]
     replica_sigma = replica[:, 2]
