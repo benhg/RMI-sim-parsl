@@ -3,11 +3,13 @@ import json
 import sys
 import os
 import shutil
+import glob
 
+from numpy import arange, array, loadtxt, savetxt
 import parsl
-from numpy import arange, array
 from parsl.configs.local_threads import config
 from parsl.app.app import bash_app
+from pylab import *
 
 import generate_config
 
@@ -54,7 +56,7 @@ def setup_environment():
 
 
 def gen_data(model):
-    names = glob("{}/finished_data/*".format(model))
+    names = glob.glob("{}_model/finished_data/*".format(model))
     data = [[], [], [], [], [], [], []]
     helpi = names[0].split(";")[2]
     names.sort(key=lambda x: float(x.split(';')[2]))
@@ -65,10 +67,10 @@ def gen_data(model):
             for j in i_data_i:
                 data[i].append(j)
 
-    return data, size, measurements
+    return data, run_config["size"], run_config["measurements"]
 
 
-def three_models_plot(T_plot, E_XY, E_aub, E_replica, sigma_XY, sigma_AUB,
+def three_models_plot(T_plot, E_XY, E_AUB, E_replica, sigma_XY, sigma_AUB,
                       sigma_replica):
     plot(T_plot, E_XY, 'b', label="Normal XY")
     errorbar(T_plot, E_XY, yerr=sigma_XY)
@@ -97,11 +99,12 @@ def plot_rmi(T_plot, RMIpts, RMIsigmaplot):
     savefig("RMI_{}".format(run_config["model"]))
 
 
-def calc_rmi_for_temp(E_XY, E_replica, E_AUB, T_plot):
+def calc_rmi_for_temp(E_XY, E_replica, E_AUB, T_plot, sigma_replica, sigma_AUB,
+                      sigma_XY):
     count = len(E_XY)
     RMIpts = []
     RMIsigmaplot = []
-    deltaT = Tstep
+    deltaT = run_config["delta_T"]
     for i in range(count):
         RMI = 0.0
         sigma_sigma_i = 0.0
@@ -157,10 +160,11 @@ def aggregate(DATA, Tstep):
     E_XY = DATA[1]
     sigma_XY = DATA[2]
 
-    three_models_plot(T_plot, E_XY, E_aub, E_replica, sigma_XY, sigma_AUB,
+    three_models_plot(T_plot, E_XY, E_AUB, E_replica, sigma_XY, sigma_AUB,
                       sigma_replica)
 
-    RMIsigmaplot, RMIpts, sigma_i = calc_rmi_for_temp()
+    RMIsigmaplot, RMIpts, sigma_i = calc_rmi_for_temp(
+        E_XY, E_replica, E_AUB, T_plot, sigma_replica, sigma_AUB, sigma_XY)
 
     plot_rmi(T_plot, RMIpts, RMIsigmaplot)
 
@@ -187,8 +191,11 @@ if __name__ == '__main__':
                     run_config["T_batch"], run_config["delta_T"]))
     submit_all_jobs(temp_list)
     data, size, measurements = gen_data(run_config["model"])
-    if run_config["delta_beta"]:
-        delta = run_config["delta_beta"]
-    else:
+    try:
+        if run_config["delta_beta"]:
+            delta = run_config["delta_beta"]
+        else:
+            delta = run_config["delta_T"]
+    except KeyError as e:
         delta = run_config["delta_T"]
     aggregate(data, delta)
