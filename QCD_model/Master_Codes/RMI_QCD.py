@@ -332,55 +332,12 @@ def vary_temps(Tm, TM, dT, savedata='yes'):
             replica_E,
             replica_sigma]
         # Save to finished data
-        path = '/home/users/briansmith/files/QCD_model/finished_data'
+        path = 'QCD_model/finished_data'
         savetxt('{0}/RMI_QCD;{1};{2};{3};{4}'.format(path,
                                                      E_measurements, Tm, TM, dT), data)
 
     return [T_plot, replica_E, replica_sigma, AUB_E, AUB_sigma, XY_E, XY_sigma]
 
-
-def calcRMI(T_min, T_max, Tstep):
-    global size_global, todate, E_measurements
-    size = size_global
-
-    DATA = vary_temps(T_min, T_max, T_step)
-
-    T_plot = DATA[0]
-    # Replica data
-    E_replica = DATA[1]
-    sigma_replica = DATA[2]
-    # AUB data
-    E_AUB = DATA[3]
-    sigma_AUB = DATA[4]
-    # Normal data
-    E_QCD = DATA[5]
-    sigma_QCD = DATA[6]
-
-    # Calculate RMI for each temperature
-    print("Working on Renyi Mutual Information...")
-    count = len(E_QCD)
-    RMIpts = []
-    RMIsigmaplot = []
-    deltaT = Tstep
-    for i in range(count):
-        RMI = 0.0
-        sigma_sigma_i = 0.0
-        for j in range(i, count):
-            term = -deltaT * (2 * E_replica[j] - E_AUB[j] - 2 *
-                              E_QCD[j]) / (T_plot[j] ** 2)
-            sigma_sigma_j = ((2 * deltaT) / ((T_plot[j] ** 2) * size * 2)) \
-                ** 2 * (sigma_replica[j] ** 2) + (deltaT / ((T_plot[j] ** 2) *
-                                                            size * 2)) ** 2 * (sigma_AUB[j] ** 2) + (
-                (2 * deltaT) / ((T_plot[j] ** 2) * size * 2)) \
-                ** 2 * (sigma_QCD[j] ** 2)
-            sigma_sigma_i += sigma_sigma_j
-            RMI += term
-        sigma_i = sqrt(sigma_sigma_i)
-        RMI /= 2 * size
-        RMIpts.append(RMI)
-        RMIsigmaplot.append(sigma_i)
-
-    return [T_plot, RMIpts]
 
 
 # Simulation console
@@ -393,7 +350,7 @@ if __name__ == "__main__":  # Required for multiprocessing on windows
     Tmax = float(sys.argv[5])
     T_step = float(sys.argv[2])
 
-    calcRMI(Tmin, Tmax, T_step)
+    DATA = vary_temps(T_min, T_max, T_step)
 
     # End of main program
 
